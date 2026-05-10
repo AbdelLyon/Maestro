@@ -2,12 +2,14 @@ import { inject, injectable } from "tsyringe";
 import {
   type IAIQuoteService,
   type IQuoteRepository,
-  Quote,
-  QuoteSchema, // Import pour la validation finale
+  QuoteEntity,
+  QuoteSchema,
+  type Quote,
 } from "../..";
 
 export type CreateQuoteInput = {
   clientName?: string; // Optionnel car l'IA peut le trouver
+  companyId: string;
   clientAddress?: string;
   contactInfo?: string;
   projectType?: string;
@@ -29,7 +31,7 @@ export class CreateQuoteFromVoice {
     @inject("IQuoteRepository") private quoteRepository: IQuoteRepository
   ) {}
 
-  async execute(input: CreateQuoteInput): Promise<Quote> {
+  async execute(input: CreateQuoteInput): Promise<QuoteEntity> {
     let aiQuote: Quote | undefined;
 
     // 1. Appel de l'IA si un transcript est fourni
@@ -58,22 +60,26 @@ export class CreateQuoteFromVoice {
       createdAt: new Date(),
       status: 'DRAFT',
       clientName: clientName,
+      companyId: input.companyId,
       clientAddress: input.clientAddress || aiQuote?.clientAddress || '',
       contactInfo: input.contactInfo || aiQuote?.contactInfo || '',
       projectType: input.projectType || aiQuote?.projectType || 'Nouveau Chantier',
       startDate: input.startDate || aiQuote?.startDate || '',
       notes: input.notes || aiQuote?.notes || '',
       items: items as any, // On cast car QuoteItemSchema attend unit et taxRate
-      totalHT,
-      totalTTC,
+      totalHT: { amount: totalHT, currency: 'EUR' },
+      totalTTC: { amount: totalTTC, currency: 'EUR' },
     };
 
     // 5. Validation par le schéma de domaine (Zod)
     const validatedQuote = QuoteSchema.parse(finalQuote);
 
-    // 6. Persistance
-    await this.quoteRepository.save(validatedQuote);
+    // 6. Création de l'entité domaine
+    const quoteEntity = QuoteEntity.fromJSON(validatedQuote);
 
-    return validatedQuote;
+    // 7. Persistance
+    await this.quoteRepository.save(quoteEntity);
+
+    return quoteEntity;
   }
 }
