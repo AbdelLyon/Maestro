@@ -34,21 +34,16 @@ import {
   type SortingState,
   type VisibilityState,
 } from "@tanstack/react-table";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-import { toast } from "sonner";
+
 import { z } from "zod";
 
-import { useIsMobile } from "@/hooks/use-mobile";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
+  useIsMobile,
+  Checkbox,
+  // toast,
+  Button,
+  Badge,
+  DropdownMenu,
   Drawer,
   DrawerClose,
   DrawerContent,
@@ -57,50 +52,39 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
-import {
-  DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
+  Input,
+  Label,
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  GripVerticalIcon,
-  CircleCheckIcon,
-  LoaderIcon,
-  EllipsisVerticalIcon,
-  Columns3Icon,
-  ChevronDownIcon,
-  PlusIcon,
-  ChevronsLeftIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronsRightIcon,
-  TrendingUpIcon,
-} from "lucide-react";
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Separator,
+  Icons,
+  Charts,
+  ChartUI,
+  ChartConfig,
+  toast,
+} from "@maestro/ui";
+
 import { useId, useMemo, useState } from "react";
+import { ChartTooltipContent } from "../../../packages/ui/dist/components/chart";
 
 export const schema = z.object({
   id: z.number(),
@@ -126,7 +110,7 @@ function DragHandle({ id }: { id: number }) {
       size="icon"
       className="size-7 text-muted-foreground hover:bg-transparent"
     >
-      <GripVerticalIcon className="size-3 text-muted-foreground" />
+      <Icons.GripVerticalIcon className="size-3 text-muted-foreground" />
       <span className="sr-only">Drag to reorder</span>
     </Button>
   );
@@ -189,9 +173,9 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     cell: ({ row }) => (
       <Badge variant="outline" className="px-1.5 text-muted-foreground">
         {row.original.status === "Done" ? (
-          <CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
+          <Icons.CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
         ) : (
-          <LoaderIcon />
+          <Icons.LoaderIcon />
         )}
         {row.original.status}
       </Badge>
@@ -293,7 +277,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
             className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
             size="icon"
           >
-            <EllipsisVerticalIcon />
+            <Icons.EllipsisVerticalIcon />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
@@ -436,9 +420,9 @@ export function DataTable({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
-                <Columns3Icon data-icon="inline-start" />
+                <Icons.Columns3Icon data-icon="inline-start" />
                 Columns
-                <ChevronDownIcon data-icon="inline-end" />
+                <Icons.ChevronDownIcon data-icon="inline-end" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-32">
@@ -466,7 +450,7 @@ export function DataTable({
             </DropdownMenuContent>
           </DropdownMenu>
           <Button variant="outline" size="sm">
-            <PlusIcon />
+            <Icons.PlusIcon />
             <span className="hidden lg:inline">Add Section</span>
           </Button>
         </div>
@@ -570,7 +554,7 @@ export function DataTable({
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to first page</span>
-                <ChevronsLeftIcon />
+                <Icons.ChevronsLeftIcon />
               </Button>
               <Button
                 variant="outline"
@@ -580,7 +564,7 @@ export function DataTable({
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to previous page</span>
-                <ChevronLeftIcon />
+                <Icons.ChevronLeftIcon />
               </Button>
               <Button
                 variant="outline"
@@ -590,7 +574,7 @@ export function DataTable({
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to next page</span>
-                <ChevronRightIcon />
+                <Icons.ChevronRightIcon />
               </Button>
               <Button
                 variant="outline"
@@ -600,7 +584,7 @@ export function DataTable({
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to last page</span>
-                <ChevronsRightIcon />
+                <Icons.ChevronsRightIcon />
               </Button>
             </div>
           </div>
@@ -665,8 +649,8 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           {!isMobile && (
             <>
-              <ChartContainer config={chartConfig}>
-                <AreaChart
+              <ChartUI.Container config={chartConfig}>
+                <Charts.AreaChart
                   accessibilityLayer
                   data={chartData}
                   margin={{
@@ -674,8 +658,8 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                     right: 10,
                   }}
                 >
-                  <CartesianGrid vertical={false} />
-                  <XAxis
+                  <Charts.CartesianGrid vertical={false} />
+                  <Charts.XAxis
                     dataKey="month"
                     tickLine={false}
                     axisLine={false}
@@ -683,11 +667,11 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                     tickFormatter={(value) => value.slice(0, 3)}
                     hide
                   />
-                  <ChartTooltip
+                  <ChartUI.Tooltip
                     cursor={false}
                     content={<ChartTooltipContent indicator="dot" />}
                   />
-                  <Area
+                  <Charts.Area
                     dataKey="mobile"
                     type="natural"
                     fill="var(--color-mobile)"
@@ -695,7 +679,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                     stroke="var(--color-mobile)"
                     stackId="a"
                   />
-                  <Area
+                  <Charts.Area
                     dataKey="desktop"
                     type="natural"
                     fill="var(--color-desktop)"
@@ -703,13 +687,13 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                     stroke="var(--color-desktop)"
                     stackId="a"
                   />
-                </AreaChart>
-              </ChartContainer>
+                </Charts.AreaChart>
+              </ChartUI.Container>
               <Separator />
               <div className="grid gap-2">
                 <div className="flex gap-2 leading-none font-medium">
                   Trending up by 5.2% this month{" "}
-                  <TrendingUpIcon className="size-4" />
+                  <Icons.TrendingUpIcon className="size-4" />
                 </div>
                 <div className="text-muted-foreground">
                   Showing total visitors for the last 6 months. This is just

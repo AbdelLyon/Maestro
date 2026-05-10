@@ -2,12 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-
-import { ActivityIcon, TrendingUpIcon } from "lucide-react";
-
-import { useIsMobile } from "@/hooks/use-mobile";
-
 import {
   Card,
   CardAction,
@@ -15,26 +9,20 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-
-import { Badge } from "@/components/ui/badge";
-
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
-
-import {
+  Badge,
+  useIsMobile,
+  ChartUI,
+  Charts,
+  Icons,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+  ToggleGroup,
+  ToggleGroupItem,
+  type ChartConfig,
+} from "@maestro/ui";
 
 /* -------------------------------------------------------------------------- */
 /*                                   DATA                                     */
@@ -134,7 +122,7 @@ export function ChartAreaInteractive() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <ActivityIcon className="size-5" />
+                <Icons.ActivityIcon className="size-5" />
               </div>
 
               <div>
@@ -157,7 +145,7 @@ export function ChartAreaInteractive() {
                 variant="outline"
                 className="mb-1 gap-1 rounded-md border-green-500/20 bg-green-500/10 text-green-600 dark:text-green-400"
               >
-                <TrendingUpIcon className="size-3.5" />
+                <Icons.TrendingUpIcon className="size-3.5" />
                 +18.2%
               </Badge>
             </div>
@@ -207,11 +195,11 @@ export function ChartAreaInteractive() {
 
       {/* CHART */}
       <CardContent className="px-2 pt-0 sm:px-6">
-        <ChartContainer
+        <ChartUI.Container
           config={chartConfig}
           className="aspect-auto h-[320px] w-full"
         >
-          <AreaChart data={filteredData}>
+          <Charts.AreaChart data={filteredData}>
             {/* GRADIENTS */}
             <defs>
               <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
@@ -244,10 +232,10 @@ export function ChartAreaInteractive() {
             </defs>
 
             {/* GRID */}
-            <CartesianGrid vertical={false} />
+            <Charts.CartesianGrid vertical={false} />
 
             {/* X AXIS */}
-            <XAxis
+            <Charts.XAxis
               dataKey="date"
               tickLine={false}
               axisLine={false}
@@ -264,10 +252,10 @@ export function ChartAreaInteractive() {
             />
 
             {/* TOOLTIP */}
-            <ChartTooltip
+            <ChartUI.Tooltip
               cursor={false}
               content={
-                <ChartTooltipContent
+                <ChartUI.TooltipContent
                   indicator="dot"
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString("fr-FR", {
@@ -280,7 +268,7 @@ export function ChartAreaInteractive() {
             />
 
             {/* MOBILE */}
-            <Area
+            <Charts.Area
               dataKey="mobile"
               type="natural"
               fill="url(#fillMobile)"
@@ -289,15 +277,15 @@ export function ChartAreaInteractive() {
             />
 
             {/* DESKTOP */}
-            <Area
+            <Charts.Area
               dataKey="desktop"
               type="natural"
               fill="url(#fillDesktop)"
               stroke="var(--color-desktop)"
               stackId="a"
             />
-          </AreaChart>
-        </ChartContainer>
+          </Charts.AreaChart>
+        </ChartUI.Container>
       </CardContent>
     </Card>
   );

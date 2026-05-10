@@ -1,13 +1,14 @@
 'use server';
 
-import { container } from '@batisseur/core';
-import { CreateQuoteFromVoice, type CreateQuoteInput } from '@batisseur/core';
+import { container } from '@maestro/core';
+import { CreateQuoteFromVoice, type CreateQuoteInput } from '@maestro/core';
 
 export async function processVoiceAction(formData: FormData) {
   const clientName = (formData.get('clientName') as string) ?? '';
   const transcript = (formData.get('transcript') as string) ?? '';
 
   const input: CreateQuoteInput = {
+    companyId: 'default-company', // TODO: get from user session
     clientName,
     transcript,
   };

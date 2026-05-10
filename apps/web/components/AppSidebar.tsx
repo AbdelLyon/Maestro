@@ -1,8 +1,8 @@
 "use client";
 
-import { NavDocuments } from "@/components/shared/NavDocuments";
-import { NavSecondary } from "@/components/shared/NavSecondary";
-import { NavUser } from "@/components/shared/NavUser";
+import { NavDocuments } from "@/components/NavDocuments";
+import { NavSecondary } from "@/components/NavSecondary";
+import { NavUser } from "@/components/NavUser";
 import {
   Sidebar,
   SidebarContent,
@@ -11,23 +11,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import {
-  LayoutDashboardIcon,
-  ListIcon,
-  ChartBarIcon,
-  FolderIcon,
-  UsersIcon,
-  CameraIcon,
-  FileTextIcon,
-  Settings2Icon,
-  CircleHelpIcon,
-  SearchIcon,
-  DatabaseIcon,
-  FileChartColumnIcon,
-  FileIcon,
-  CommandIcon,
-} from "lucide-react";
+  Icons,
+} from "@maestro/ui";
+
 import { NavMain } from "./NavMain";
 
 const data = {
@@ -40,33 +26,33 @@ const data = {
     {
       title: "Dashboard",
       url: "#",
-      icon: <LayoutDashboardIcon />,
+      icon: <Icons.LayoutDashboardIcon />,
     },
     {
       title: "Lifecycle",
       url: "#",
-      icon: <ListIcon />,
+      icon: <Icons.ListIcon />,
     },
     {
       title: "Analytics",
       url: "#",
-      icon: <ChartBarIcon />,
+      icon: <Icons.ChartBarIcon />,
     },
     {
       title: "Projects",
       url: "#",
-      icon: <FolderIcon />,
+      icon: <Icons.FolderIcon />,
     },
     {
       title: "Team",
       url: "#",
-      icon: <UsersIcon />,
+      icon: <Icons.UsersIcon />,
     },
   ],
   navClouds: [
     {
       title: "Capture",
-      icon: <CameraIcon />,
+      icon: <Icons.CameraIcon />,
       isActive: true,
       url: "#",
       items: [
@@ -82,7 +68,7 @@ const data = {
     },
     {
       title: "Proposal",
-      icon: <FileTextIcon />,
+      icon: <Icons.FileTextIcon />,
       url: "#",
       items: [
         {
@@ -97,7 +83,7 @@ const data = {
     },
     {
       title: "Prompts",
-      icon: <FileTextIcon />,
+      icon: <Icons.FileTextIcon />,
       url: "#",
       items: [
         {
@@ -115,34 +101,34 @@ const data = {
     {
       title: "Settings",
       url: "#",
-      icon: <Settings2Icon />,
+      icon: <Icons.Settings2Icon />,
     },
     {
       title: "Get Help",
       url: "#",
-      icon: <CircleHelpIcon />,
+      icon: <Icons.CircleHelpIcon />,
     },
     {
       title: "Search",
       url: "#",
-      icon: <SearchIcon />,
+      icon: <Icons.SearchIcon />,
     },
   ],
   documents: [
     {
       name: "Data Library",
       url: "#",
-      icon: <DatabaseIcon />,
+      icon: <Icons.DatabaseIcon />,
     },
     {
       name: "Reports",
       url: "#",
-      icon: <FileChartColumnIcon />,
+      icon: <Icons.FileChartColumnIcon />,
     },
     {
       name: "Word Assistant",
       url: "#",
-      icon: <FileIcon />,
+      icon: <Icons.FileIcon />,
     },
   ],
 };
@@ -158,7 +144,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <a href="#">
-                <CommandIcon className="size-5!" />
+                <Icons.CommandIcon className="size-5!" />
                 <span className="text-base font-semibold">Bati.fr</span>
               </a>
             </SidebarMenuButton>

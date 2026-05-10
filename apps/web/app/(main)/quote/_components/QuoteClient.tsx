@@ -4,8 +4,8 @@ import { SubmitEvent, useRef } from "react";
 import { QuotePreview } from "@/app/(main)/quote/_components/QuotePreview";
 
 import { QuoteForm } from "./QuoteForm";
-import { PageContainer } from "@/components/shared/PageContainer";
 import { useGenerateQuote } from "../_hooks/useGenerateQuote";
+import { PageContainer } from "@/components/PageContainer";
 
 export const QuoteClient = () => {
   const formRef = useRef<HTMLFormElement>(null);

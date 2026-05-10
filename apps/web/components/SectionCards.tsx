@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardAction,
@@ -8,9 +7,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-
-import { TrendingUpIcon, TrendingDownIcon } from "lucide-react";
+  Badge,
+  Icons,
+} from "@maestro/ui";
 
 export function SectionCards() {
   return (
@@ -34,7 +33,7 @@ export function SectionCards() {
                 variant="outline"
                 className="gap-1 rounded-md border-green-500/20 bg-green-500/10 text-green-600 dark:text-green-400"
               >
-                <TrendingUpIcon className="size-3.5" />
+                <Icons.TrendingUpIcon className="size-3.5" />
                 +12.5%
               </Badge>
             </CardAction>
@@ -44,7 +43,7 @@ export function SectionCards() {
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="flex items-center gap-1 font-medium">
             Forte croissance ce mois-ci
-            <TrendingUpIcon className="size-4 text-green-500" />
+            <Icons.TrendingUpIcon className="size-4 text-green-500" />
           </div>
 
           <div className="text-muted-foreground">
@@ -72,7 +71,7 @@ export function SectionCards() {
                 variant="outline"
                 className="gap-1 rounded-md border-red-500/20 bg-red-500/10 text-red-600 dark:text-red-400"
               >
-                <TrendingDownIcon className="size-3.5" />
+                <Icons.TrendingDownIcon className="size-3.5" />
                 -8%
               </Badge>
             </CardAction>
@@ -82,7 +81,7 @@ export function SectionCards() {
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="flex items-center gap-1 font-medium">
             Léger ralentissement
-            <TrendingDownIcon className="size-4 text-red-500" />
+            <Icons.TrendingDownIcon className="size-4 text-red-500" />
           </div>
 
           <div className="text-muted-foreground">
@@ -110,7 +109,7 @@ export function SectionCards() {
                 variant="outline"
                 className="gap-1 rounded-md border-green-500/20 bg-green-500/10 text-green-600 dark:text-green-400"
               >
-                <TrendingUpIcon className="size-3.5" />
+                <Icons.TrendingUpIcon className="size-3.5" />
                 +24%
               </Badge>
             </CardAction>
@@ -120,7 +119,7 @@ export function SectionCards() {
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="flex items-center gap-1 font-medium">
             Activité en hausse
-            <TrendingUpIcon className="size-4 text-green-500" />
+            <Icons.TrendingUpIcon className="size-4 text-green-500" />
           </div>
 
           <div className="text-muted-foreground">
@@ -148,7 +147,7 @@ export function SectionCards() {
                 variant="outline"
                 className="gap-1 rounded-md border-green-500/20 bg-green-500/10 text-green-600 dark:text-green-400"
               >
-                <TrendingUpIcon className="size-3.5" />
+                <Icons.TrendingUpIcon className="size-3.5" />
                 +4.2%
               </Badge>
             </CardAction>
@@ -158,7 +157,7 @@ export function SectionCards() {
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="flex items-center gap-1 font-medium">
             Excellentes performances
-            <TrendingUpIcon className="size-4 text-green-500" />
+            <Icons.TrendingUpIcon className="size-4 text-green-500" />
           </div>
 
           <div className="text-muted-foreground">

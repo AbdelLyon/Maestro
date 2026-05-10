@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@batisseur/core'],
+  transpilePackages: ["@maestro/ui", "@maestro/core", "@maestro/database"],
     reactCompiler: true,
 };
 
