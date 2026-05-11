@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// === MODULE IDENTITY ===
+
+model Company {
+  id            String   @id @default(uuid())
+  name          String
+  siret         String   @unique
+  label_rge     Boolean  @default(false)
+  speciality    String?
+  location_lat  Float?
+  location_lng  Float?
+  created_at    DateTime @default(now())
+
+  users         User[]
+  quotes        Quote[]
+  cashFlows     CashFlowEvent[]
+}
+
+model User {
+  id         String  @id @default(uuid())
+  company_id String
+  email      String  @unique
+  full_name  String?
+
+  company    Company @relation(fields: [company_id], references: [id])
+}
+
+// === MODULE FINANCE ===
+
+model Quote {
+  id          String   @id @default(uuid())
+  company_id  String
+  client_name String
+  status      String   // draft, sent, signed, rejected
+  total_ht    Decimal
+  total_ttc   Decimal
+  created_at  DateTime @default(now())
+
+  company     Company @relation(fields: [company_id], references: [id])
+  items       QuoteItem[]
+  invoice     Invoice?
+  grants      ProjectGrant[]
+}
+
+model QuoteItem {
+  id         String  @id @default(uuid())
+  quote_id   String
+  label      String
+  quantity   Float
+  unit_price Decimal
+  vat_rate   Float
+
+  quote Quote @relation(fields: [quote_id], references: [id])
+}
+
+model Invoice {
+  id         String   @id @default(uuid())
+  quote_id   String   @unique
+  due_date   DateTime
+  status     String   // pending, paid, overdue
+
+  quote Quote @relation(fields: [quote_id], references: [id])
+}
+
+model CashFlowEvent {
+  id             String   @id @default(uuid())
+  company_id     String
+  amount         Decimal
+  date           DateTime
+  type           String   // income, expense
+  is_predicted   Boolean
+
+  company Company @relation(fields: [company_id], references: [id])
+}
+
+// === MODULE REGULATORY ===
+
+model GrantRule {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  conditions  Json
+  updated_at  DateTime @updatedAt
+
+  projectGrants ProjectGrant[]
+}
+
+model ProjectGrant {
+  id               String   @id @default(uuid())
+  quote_id         String
+  grant_id         String
+  estimated_amount Decimal
+
+  quote Quote @relation(fields: [quote_id], references: [id])
+  grant GrantRule @relation(fields: [grant_id], references: [id])
+}

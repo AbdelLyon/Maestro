@@ -1,17 +1,17 @@
-import { Quote } from "@batisseur/core";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import type { QuoteEntity } from "@maestro/core";
+import { CardContent } from "@maestro/ui";
+import { TableHeader } from "@maestro/ui";
+import { TableHead } from "@maestro/ui";
+import { TableCell } from "@maestro/ui";
+import { TableBody } from "@maestro/ui";
+import { TableRow } from "@maestro/ui";
+import { Table } from "@maestro/ui";
+import { CardTitle } from "@maestro/ui";
+import { CardHeader } from "@maestro/ui";
+import { Card } from "@maestro/ui";
 
 interface QuotePreviewProps {
-  quote: Quote;
+  quote: QuoteEntity;
 }
 
 export function QuotePreview({ quote }: QuotePreviewProps) {
@@ -50,7 +50,7 @@ export function QuotePreview({ quote }: QuotePreviewProps) {
             </TableHeader>
 
             <TableBody>
-              {quote.items.map((item, index) => (
+              {quote.items.map((item: QuoteEntity["items"][number], index) => (
                 <TableRow
                   key={index}
                   className="hover:bg-muted/40 transition-colors"

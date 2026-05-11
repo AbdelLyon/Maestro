@@ -1,4 +1,3 @@
-import "reflect-metadata"; // IMPORTANT : Toujours en premier
 import { container } from "tsyringe";
 import { InMemoryQuoteRepository } from "./InMemoryQuoteRepository";
 import { AIQuoteService } from "./services/AIQuoteService";

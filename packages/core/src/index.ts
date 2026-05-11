@@ -1,14 +1,38 @@
-// packages/core/src/index.ts
+// ============================================================================
+// Domain Layer
+// ============================================================================
 
-import "reflect-metadata"; // Crucial pour que les décorateurs fonctionnent partout
+// Entities
+export * from "./domain/entities/Quote";
+export * from "./domain/entities/Company";
+export * from "./domain/entities/User";
+export * from "./domain/entities/Invoice";
+export * from "./domain/entities/CashFlowEvent";
+export * from "./domain/entities/GrantRule";
+export * from "./domain/entities/ProjectGrant";
 
-export * from './domain/entities/Quote';
-export * from './domain/interfaces/IAIService';
-export * from './domain/interfaces/IQuoteRepository';
-export * from './domain/use-cases/CreateQuoteFromVoice';
-export * from './infrastructure/services/AIQuoteService';
-export * from './infrastructure/InMemoryQuoteRepository';
-export * from './utils/normalizeUnit';
+// Interfaces
+export * from "./domain/interfaces/IAIService";
+export * from "./domain/interfaces/IQuoteRepository";
 
-// AJOUTE CECI :
-export { container } from './infrastructure/Container';
+// Use Cases
+export * from "./domain/use-cases/CreateQuoteFromVoice";
+
+// ============================================================================
+// Infrastructure Layer
+// ============================================================================
+
+// Services
+export * from "./infrastructure/services/AIQuoteService";
+
+// Repositories
+export * from "./infrastructure/InMemoryQuoteRepository";
+
+// Dependency Injection Container
+export { container } from "./infrastructure/Container";
+
+// ============================================================================
+// Utils
+// ============================================================================
+
+export * from "./utils/normalizeUnit";

@@ -5,11 +5,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import Providers from "@/providers/Providers";
-
-import { AppSidebar } from "@/components/shared/AppSidebar";
-import { SiteHeader } from "@/components/shared/SiteHeader";
-
-import { SidebarInset } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
+import { SidebarInset, SiteHeader } from "@maestro/ui";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -47,12 +44,11 @@ export default function RootLayout({
         className="min-h-screen bg-background text-foreground"
       >
         <Providers>
-          <AppSidebar variant="inset" />
+          <AppSidebar />
 
           <SidebarInset>
             <SiteHeader />
-
-            <main className="flex-1">{children}</main>
+            {children}
           </SidebarInset>
         </Providers>
       </body>

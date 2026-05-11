@@ -1,6 +1,5 @@
 import { generateText, Output } from 'ai';
 import { groq, type GroqLanguageModelOptions } from '@ai-sdk/groq';
-import { singleton } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -11,7 +10,7 @@ import {
 
 import { IAIQuoteService } from '../../domain/interfaces/IAIService';
 import { normalizeUnit } from '../../utils/normalizeUnit';
-import { AIQuoteSchema } from '../schemas/AIQuoteSchema';
+import { AIQuoteSchema, type AIQuote } from '../schemas/AIQuoteSchema';
 
 /**
  * ---------------------------------------------------
@@ -19,7 +18,6 @@ import { AIQuoteSchema } from '../schemas/AIQuoteSchema';
  * ---------------------------------------------------
  */
 
-@singleton()
 export class AIQuoteService implements IAIQuoteService {
   private model = groq('llama-3.3-70b-versatile');
 
@@ -30,8 +28,6 @@ export class AIQuoteService implements IAIQuoteService {
     this.assertEnv();
 
     const raw = await this.callGroq(transcript);
-
-    console.log('AI RAW OUTPUT:', raw);
 
     const items = this.mapAIToItems(raw);
 
@@ -58,7 +54,7 @@ export class AIQuoteService implements IAIQuoteService {
    * 2. GROQ CALL
    * ---------------------------------------------------
    */
-  private async callGroq(transcript: string) {
+  private async callGroq(transcript: string): Promise<AIQuote> {
     const result = await generateText({
       model: this.model,
 
@@ -115,18 +111,20 @@ export class AIQuoteService implements IAIQuoteService {
    * 4. MAPPING ITEMS
    * ---------------------------------------------------
    */
-  private mapAIToItems(raw: any) {
-    return (raw.items ?? []).map((item: any) => ({
-      label: item.label ?? 'Prestation',
+  private mapAIToItems(raw: AIQuote) {
+    return raw.items.map((item) => {
+      const unit = normalizeUnit(item.unit);
+      const priceHT = Number(item.priceHT ?? 0);
 
-      quantity: Number(item.quantity ?? 1),
-
-      unit: normalizeUnit(item.unit),
-
-      priceHT: Number(item.priceHT ?? 0),
-
-      taxRate: 10,
-    }));
+      return {
+        label: item.label ?? "Prestation",
+        quantity: Number(item.quantity ?? 1),
+        unit,
+        vatRate: 10,
+        unitPrice: { amount: priceHT, currency: "EUR" },
+        priceHT,
+      };
+    });
   }
 
   /**
@@ -134,7 +132,7 @@ export class AIQuoteService implements IAIQuoteService {
    * 5. VALIDATION
    * ---------------------------------------------------
    */
-  private assertItems(items: Quote[]): void {
+  private assertItems(items: Quote["items"]): void {
     if (!items.length) {
       throw new Error('Aucune prestation détectée.');
     }
@@ -145,38 +143,31 @@ export class AIQuoteService implements IAIQuoteService {
    * 6. BUILD DOMAIN OBJECT
    * ---------------------------------------------------
    */
-  private buildQuote(raw: any, items: { label: string; quantity: number; unit: string; priceHT: number; taxRate: number; }[]) {
-      const totalHT = items.reduce(
-        (acc, i) =>
-          acc + i.quantity * i.priceHT,
-        0
-      );
-
+  private buildQuote(raw: AIQuote, items: Quote["items"]) {
+    const totalHT = items.reduce((acc, i) => acc + i.quantity * i.priceHT, 0);
     const totalTTC = totalHT * 1.1;
 
     return {
       id: uuidv4(),
       createdAt: new Date(),
-      status: 'DRAFT' as const,
+      status: "DRAFT" as const,
 
-      clientName:
-        raw.clientName ??
-        'Client à préciser',
+      // TODO (refacto DDD) : passer companyId en paramètre au lieu de placeholder
+      companyId: "UNKNOWN",
 
-      clientAddress: '',
-      contactInfo: '',
+      clientName: raw.clientName ?? "Client à préciser",
 
-      projectType:
-        raw.projectType ?? '',
+      clientAddress: "",
+      contactInfo: "",
 
-      startDate: '',
-
-      notes: raw.notes ?? '',
+      projectType: raw.projectType ?? "",
+      startDate: "",
+      notes: raw.notes ?? "",
 
       items,
 
-      totalHT,
-      totalTTC,
+      totalHT: { amount: totalHT, currency: "EUR" },
+      totalTTC: { amount: totalTTC, currency: "EUR" },
     };
   }
 }
