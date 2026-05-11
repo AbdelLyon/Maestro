@@ -1,6 +1,8 @@
-import { Separator, SidebarTrigger, ThemeSwitcher } from "@maestro/ui";
+import { Separator } from "./separator";
+import { SidebarTrigger } from "./sidebar";
+import { ThemeSwitcher } from "./themeSwitcher";
 
-export function SiteHeader() {
+export function SiteHeader({ title = "Documents" }: { title?: string }) {
   return (
     <header className="flex h-(--header-height) shrink-0 items-center justify-between border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       {/* LEFT */}
@@ -12,7 +14,7 @@ export function SiteHeader() {
           className="mx-2 data-[orientation=vertical]:h-4"
         />
 
-        <h1 className="text-base font-medium">Documents</h1>
+        <h1 className="text-base font-medium">{title}</h1>
       </div>
 
       {/* RIGHT */}

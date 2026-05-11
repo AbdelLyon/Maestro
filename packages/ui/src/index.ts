@@ -21,6 +21,7 @@ export * from "./components/badge";
 export * from "./components/sidebar";
 export * from "./components/avatar";
 export * from "./components/heading";
+export * from "./components/site-header";
 export * from "./components/themeSwitcher";
 export * from "./providers/ThemeProvider";
 
@@ -39,3 +40,4 @@ export { Charts, ChartUI } from "./lib/charts";
 
 // types only
 export type { ChartConfig } from "./components/chart";
+export { ChartTooltipContent } from "./components/chart";

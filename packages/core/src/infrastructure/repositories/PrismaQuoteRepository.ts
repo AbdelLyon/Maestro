@@ -39,8 +39,8 @@ export class PrismaQuoteRepository implements IQuoteRepository {
       company_id: quoteJson.companyId,
       client_name: quoteJson.clientName,
       status: quoteJson.status,
-      total_ht: quoteJson.totalHT.amount,
-      total_ttc: quoteJson.totalTTC.amount,
+      total_ht: quoteJson.totalHT,
+      total_ttc: quoteJson.totalTTC,
       items: {
         create: quoteJson.items.map((item) => ({
           label: item.label,
@@ -76,7 +76,7 @@ export class PrismaQuoteRepository implements IQuoteRepository {
       orderBy: { created_at: "desc" },
     });
 
-    return found.map((row) => this.toDomainEntity(row));
+    return found.map((row: unknown) => this.toDomainEntity(row));
   }
 
   private toDomainEntity(row: unknown): QuoteEntity {
@@ -105,7 +105,8 @@ export class PrismaQuoteRepository implements IQuoteRepository {
     const totalHT = this.decimalToNumber(r.total_ht);
     const totalTTC = this.decimalToNumber(r.total_ttc);
 
-    const createdAt = r.created_at instanceof Date ? r.created_at : new Date(r.created_at);
+    const createdAt =
+      r.created_at instanceof Date ? r.created_at : new Date(r.created_at);
 
     return QuoteEntityDomain.fromJSON({
       id: r.id,
@@ -117,7 +118,10 @@ export class PrismaQuoteRepository implements IQuoteRepository {
         label: i.label,
         quantity: i.quantity,
         unit: "u",
-        unitPrice: { amount: this.decimalToNumber(i.unit_price), currency: "EUR" },
+        unitPrice: {
+          amount: this.decimalToNumber(i.unit_price),
+          currency: "EUR",
+        },
         vatRate: i.vat_rate,
         priceHT: this.decimalToNumber(i.unit_price) * i.quantity,
       })),
@@ -133,7 +137,9 @@ export class PrismaQuoteRepository implements IQuoteRepository {
     });
   }
 
-  private decimalToNumber(value: { toNumber?: () => number } | number | string): number {
+  private decimalToNumber(
+    value: { toNumber?: () => number } | number | string,
+  ): number {
     if (typeof value === "number") return value;
     if (typeof value === "string") return Number(value);
     if (typeof value?.toNumber === "function") return value.toNumber();

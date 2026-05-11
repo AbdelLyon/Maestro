@@ -13,17 +13,12 @@ type ThemeProviderProps = React.ComponentProps<typeof BaseProvider> & {
 
 export const ThemeProvider = ({
   children,
-
-  // defaults maîtrisés
   attribute = "class",
   defaultTheme = "system",
   enableSystem = true,
   disableTransitionOnChange = true,
-
-  // custom UI tokens
   sidebarWidth = "18rem",
   headerHeight = "4rem",
-
   ...props
 }: ThemeProviderProps) => {
   return (

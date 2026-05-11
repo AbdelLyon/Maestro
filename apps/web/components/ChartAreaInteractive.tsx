@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   Card,
@@ -134,7 +134,7 @@ export function ChartAreaInteractive() {
 
             <div className="flex items-end gap-3">
               <div className="text-3xl font-bold tracking-tight tabular-nums">
-                {totalVisitors.toLocaleString()}
+                {totalVisitors.toLocaleString("en-US")}
               </div>
 
               <Badge

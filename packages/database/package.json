@@ -1,7 +1,12 @@
 {
   "name": "@maestro/database",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
+  "exports": {
+    ".": {
+      "default": "./src/index.js"
+    }
+  },
   "scripts": {
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",

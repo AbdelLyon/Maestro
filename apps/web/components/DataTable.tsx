@@ -84,7 +84,7 @@ import {
 } from "@maestro/ui";
 
 import { useId, useMemo, useState } from "react";
-import { ChartTooltipContent } from "../../../packages/ui/dist/components/chart";
+import { ChartTooltipContent } from "@maestro/ui";
 
 export const schema = z.object({
   id: z.number(),

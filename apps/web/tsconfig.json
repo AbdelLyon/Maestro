@@ -1,35 +1,39 @@
 {
   "extends": "../../tsconfig.base.json",
-
   "compilerOptions": {
     "noEmit": true,
     "incremental": true,
     "isolatedModules": true,
-
-    "types": ["node", "react", "react-dom"],
-
+    "types": [
+      "node",
+      "react",
+      "react-dom"
+    ],
     "plugins": [
       {
         "name": "next"
       }
     ],
-
     "baseUrl": ".",
-
     "paths": {
-      "@/*": ["./*"],
-      "@maestro/core": ["../../packages/core/src"],
-      "@maestro/ui": ["../../packages/ui/src"],
-      "@maestro/database": ["../../packages/database/src"]
+      "@/*": [
+        "./*"
+      ],
+      "@maestro/core": [
+        "../../packages/core/src"
+      ],
+      "@maestro/ui": [
+        "../../packages/ui/src"
+      ]
     }
   },
-
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
