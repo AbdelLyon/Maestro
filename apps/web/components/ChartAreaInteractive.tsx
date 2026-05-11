@@ -88,13 +88,9 @@ const RANGE_MAP = {
 export function ChartAreaInteractive() {
   const isMobile = useIsMobile();
 
-  const [timeRange, setTimeRange] = useState<keyof typeof RANGE_MAP>("90d");
-
-  useEffect(() => {
-    if (isMobile) {
-      setTimeRange("7d");
-    }
-  }, [isMobile]);
+  const [timeRange, setTimeRange] = useState<keyof typeof RANGE_MAP>(
+    isMobile ? "7d" : "90d",
+  );
 
   /* ------------------------------- FILTERED ------------------------------- */
 

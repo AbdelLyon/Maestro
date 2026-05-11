@@ -1,7 +1,5 @@
 // packages/core/src/index.ts
 
-import "reflect-metadata"; // Crucial pour que les décorateurs fonctionnent partout
-
 export * from './domain/entities/Quote';
 export { QuoteEntity } from './domain/entities/Quote';
 export type { Quote } from './domain/entities/Quote';

@@ -3,11 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "pnpm --filter @maestro/web dev",
-    "build": "pnpm -r build",
+    "dev": "turbo dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
     "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules pnpm-lock.yaml",
-    "reinstall": "pnpm clean && pnpm install",
-    "typecheck": "pnpm -r build"
+    "reinstall": "pnpm clean && pnpm install"
   },
   "dependencies": {
     "@ai-sdk/groq": "4.0.0-canary.41",
@@ -16,6 +18,8 @@
   "devDependencies": {
     "@types/node": "^25.6.2",
     "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3"
-  }
+    "@types/react-dom": "^19.2.3",
+    "turbo": "^2.3.0"
+  },
+  "packageManager": "pnpm@9.12.0"
 }

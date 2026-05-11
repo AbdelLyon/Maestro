@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^7.8.0",
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.10.0",
     "uuid": "^14.0.0",

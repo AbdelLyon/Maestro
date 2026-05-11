@@ -1,4 +1,4 @@
-import { QuoteEntity } from "@maestro/core";
+import type { QuoteEntity } from "@maestro/core";
 import { CardContent } from "@maestro/ui";
 import { TableHeader } from "@maestro/ui";
 import { TableHead } from "@maestro/ui";
@@ -50,7 +50,7 @@ export function QuotePreview({ quote }: QuotePreviewProps) {
             </TableHeader>
 
             <TableBody>
-              {quote.items.map((item: any, index: number) => (
+              {quote.items.map((item: QuoteEntity["items"][number], index) => (
                 <TableRow
                   key={index}
                   className="hover:bg-muted/40 transition-colors"

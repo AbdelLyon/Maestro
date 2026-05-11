@@ -1,8 +1,6 @@
 import type { QuoteEntity } from '../domain/entities/Quote';
 import { IQuoteRepository } from '../domain/interfaces/IQuoteRepository';
-import { singleton } from "tsyringe";
 
-@singleton()
 export class InMemoryQuoteRepository implements IQuoteRepository {
   private quotes: QuoteEntity[] = [];
 

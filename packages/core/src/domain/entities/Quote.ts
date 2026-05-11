@@ -99,13 +99,14 @@ export class QuoteItem {
     };
   }
 
-  static fromJSON(data: any): QuoteItem {
+  static fromJSON(data: unknown): QuoteItem {
+    const parsed = QuoteItemSchema.parse(data);
     return new QuoteItem(
-      data.label,
-      data.quantity,
-      data.unit,
-      data.unitPrice,
-      data.vatRate
+      parsed.label,
+      parsed.quantity,
+      parsed.unit,
+      parsed.unitPrice,
+      parsed.vatRate,
     );
   }
 }
@@ -220,22 +221,25 @@ export class QuoteEntity {
     };
   }
 
-  static fromJSON(data: any): QuoteEntity {
-    const items = data.items.map((itemData: any) => QuoteItem.fromJSON(itemData));
+  static fromJSON(data: unknown): QuoteEntity {
+    const parsed = QuoteSchema.parse(data);
+
+    const items = parsed.items.map((itemData) => QuoteItem.fromJSON(itemData));
+
     return new QuoteEntity(
-      data.id,
-      data.companyId,
-      data.clientName,
+      parsed.id ?? crypto.randomUUID(),
+      parsed.companyId,
+      parsed.clientName,
       items,
-      data.status,
-      data.totalHT,
-      data.totalTTC,
-      new Date(data.createdAt),
-      data.clientAddress,
-      data.contactInfo,
-      data.projectType,
-      data.startDate,
-      data.notes
+      parsed.status,
+      parsed.totalHT.amount,
+      parsed.totalTTC.amount,
+      parsed.createdAt,
+      parsed.clientAddress,
+      parsed.contactInfo,
+      parsed.projectType,
+      parsed.startDate,
+      parsed.notes,
     );
   }
 }

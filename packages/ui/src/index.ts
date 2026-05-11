@@ -33,7 +33,9 @@ export * from "./lib/utils";
 
 // namespaces propres
 export * as Icons from "./lib/icons";
-export * as Charts from "./lib/charts";
+
+// exports nommés (utilisés directement par certaines app pages)
+export { Charts, ChartUI } from "./lib/charts";
 
 // types only
 export type { ChartConfig } from "./components/chart";

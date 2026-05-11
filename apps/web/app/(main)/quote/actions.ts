@@ -1,7 +1,12 @@
 'use server';
 
 import { container } from '@maestro/core';
-import { CreateQuoteFromVoice, type CreateQuoteInput } from '@maestro/core';
+import {
+  CreateQuoteFromVoice,
+  type CreateQuoteInput,
+  type IAIQuoteService,
+  type IQuoteRepository,
+} from '@maestro/core';
 
 export async function processVoiceAction(formData: FormData) {
   const clientName = (formData.get('clientName') as string) ?? '';
@@ -13,8 +18,11 @@ export async function processVoiceAction(formData: FormData) {
     transcript,
   };
 
-  const useCase = container.resolve(CreateQuoteFromVoice);
-  console.log("Use Case résolu par TSyringe:", useCase);
+  const aiService = container.resolve("IAIQuoteService") as IAIQuoteService;
+  const quoteRepository = container.resolve("IQuoteRepository") as IQuoteRepository;
+
+  const useCase = new CreateQuoteFromVoice(aiService, quoteRepository);
+  console.log("Use Case instancié (constructeur plain).");
 
   try {
     const result = await useCase.execute(input);
