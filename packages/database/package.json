@@ -1,22 +1,31 @@
 {
   "name": "@maestro/database",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "private": true,
+  "description": "Schéma Prisma, migrations et client PostgreSQL partagé",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "default": "./src/index.js"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     }
   },
   "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "dev": "tsc -w",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
     "studio": "prisma studio",
-    "test": "echo \"No tests yet\""
+    "db:reset": "prisma migrate reset"
   },
   "dependencies": {
     "@prisma/client": "^7.8.0"
   },
   "devDependencies": {
+    "dotenv": "^16.4.7",
     "prisma": "^7.8.0"
   }
 }
