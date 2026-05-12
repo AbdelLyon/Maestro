@@ -6,21 +6,42 @@ datasource db {
   provider = "postgresql"
 }
 
-// === MODULE IDENTITY ===
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  SIGNED
+  PAID
+  REJECTED
+}
+
+enum InvoiceStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+enum CashFlowType {
+  INCOME
+  EXPENSE
+}
+
+// ─── MODULE IDENTITY ──────────────────────────────────────────────────────────
 
 model Company {
-  id            String   @id @default(uuid())
-  name          String
-  siret         String   @unique
-  label_rge     Boolean  @default(false)
-  speciality    String?
-  location_lat  Float?
-  location_lng  Float?
-  created_at    DateTime @default(now())
+  id           String   @id @default(uuid())
+  name         String
+  siret        String   @unique
+  label_rge    Boolean  @default(false)
+  speciality   String?
+  location_lat Float?
+  location_lng Float?
+  created_at   DateTime @default(now())
 
-  users         User[]
-  quotes        Quote[]
-  cashFlows     CashFlowEvent[]
+  users     User[]
+  quotes    Quote[]
+  cashFlows CashFlowEvent[]
 }
 
 model User {
@@ -29,24 +50,24 @@ model User {
   email      String  @unique
   full_name  String?
 
-  company    Company @relation(fields: [company_id], references: [id])
+  company Company @relation(fields: [company_id], references: [id])
 }
 
-// === MODULE FINANCE ===
+// ─── MODULE FINANCE ───────────────────────────────────────────────────────────
 
 model Quote {
-  id          String   @id @default(uuid())
+  id          String      @id @default(uuid())
   company_id  String
   client_name String
-  status      String   // draft, sent, signed, rejected
+  status      QuoteStatus @default(DRAFT)
   total_ht    Decimal
   total_ttc   Decimal
-  created_at  DateTime @default(now())
+  created_at  DateTime    @default(now())
 
-  company     Company @relation(fields: [company_id], references: [id])
-  items       QuoteItem[]
-  invoice     Invoice?
-  grants      ProjectGrant[]
+  company Company        @relation(fields: [company_id], references: [id])
+  items   QuoteItem[]
+  invoice Invoice?
+  grants  ProjectGrant[]
 }
 
 model QuoteItem {
@@ -57,30 +78,30 @@ model QuoteItem {
   unit_price Decimal
   vat_rate   Float
 
-  quote Quote @relation(fields: [quote_id], references: [id])
+  quote Quote @relation(fields: [quote_id], references: [id], onDelete: Cascade)
 }
 
 model Invoice {
-  id         String   @id @default(uuid())
-  quote_id   String   @unique
+  id         String        @id @default(uuid())
+  quote_id   String        @unique
   due_date   DateTime
-  status     String   // pending, paid, overdue
+  status     InvoiceStatus @default(PENDING)
 
   quote Quote @relation(fields: [quote_id], references: [id])
 }
 
 model CashFlowEvent {
-  id             String   @id @default(uuid())
-  company_id     String
-  amount         Decimal
-  date           DateTime
-  type           String   // income, expense
-  is_predicted   Boolean
+  id           String       @id @default(uuid())
+  company_id   String
+  amount       Decimal
+  date         DateTime
+  type         CashFlowType
+  is_predicted Boolean
 
   company Company @relation(fields: [company_id], references: [id])
 }
 
-// === MODULE REGULATORY ===
+// ─── MODULE REGULATORY ────────────────────────────────────────────────────────
 
 model GrantRule {
   id          String   @id @default(uuid())
@@ -93,11 +114,11 @@ model GrantRule {
 }
 
 model ProjectGrant {
-  id               String   @id @default(uuid())
+  id               String  @id @default(uuid())
   quote_id         String
   grant_id         String
   estimated_amount Decimal
 
-  quote Quote @relation(fields: [quote_id], references: [id])
+  quote Quote     @relation(fields: [quote_id], references: [id])
   grant GrantRule @relation(fields: [grant_id], references: [id])
 }

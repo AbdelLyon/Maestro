@@ -1,0 +1,29 @@
+{
+  "name": "@maestro/infrastructure",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Couche infrastructure — adaptateurs concrets (Prisma, Groq AI, conteneur DI)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "dev": "tsc -w"
+  },
+  "dependencies": {
+    "@maestro/domain": "workspace:*",
+    "@maestro/application": "workspace:*",
+    "@maestro/database": "workspace:*",
+    "@ai-sdk/groq": "4.0.0-canary.41",
+    "ai": "7.0.0-canary.130",
+    "tsyringe": "^4.10.0",
+    "uuid": "^14.0.0",
+    "zod": "^4.4.3"
+  }
+}

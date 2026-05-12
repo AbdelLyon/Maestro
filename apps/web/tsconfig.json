@@ -1,39 +1,18 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig/nextjs.json",
   "compilerOptions": {
-    "noEmit": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "types": [
-      "node",
-      "react",
-      "react-dom"
-    ],
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "types": ["node"],
+    "plugins": [{ "name": "next" }],
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@maestro/core": [
-        "../../packages/core/src"
-      ],
-      "@maestro/ui": [
-        "../../packages/ui/src"
-      ]
+      "@/*": ["./*"],
+      "@maestro/domain": ["../../packages/domain/src"],
+      "@maestro/application": ["../../packages/application/src"],
+      "@maestro/infrastructure": ["../../packages/infrastructure/src"],
+      "@maestro/ui": ["../../packages/ui/src"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

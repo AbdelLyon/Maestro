@@ -1,4 +1,4 @@
-import type { QuoteEntity } from "@maestro/core";
+import type { QuoteEntity } from "@maestro/domain";
 import { CardContent } from "@maestro/ui";
 import { TableHeader } from "@maestro/ui";
 import { TableHead } from "@maestro/ui";
